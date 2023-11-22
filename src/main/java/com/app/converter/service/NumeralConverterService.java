@@ -1,6 +1,6 @@
 package com.app.converter.service;
 
-import com.app.converter.exception.InvalidNumeralException;
+import com.app.converter.exception.NumeralException;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ public class NumeralConverterService {
                 Converter converter = ConverterFactory.valueOf(conversionType.toUpperCase()).createConverter();
                 return converter.convert(numeral);
             } else {
-                throw new InvalidNumeralException("");
+                throw new NumeralException("Invalid Conversion Type");
             }
         }
 }
