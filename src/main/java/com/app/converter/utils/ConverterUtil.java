@@ -1,12 +1,14 @@
 package com.app.converter.utils;
 
+import com.app.converter.exception.NumeralException;
+
 public final class ConverterUtil {
     private static final String[] ROMAN_SYMBOLS = {"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
     private static final int[] VALUES = {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
 
     public static String getDecimalToRomanConversion(int num) {
         if (num <= 0) {
-            throw new IllegalArgumentException("Input must be a positive integer.");
+            throw new NumeralException("Input must be a positive integer.");
         }
         StringBuilder result = new StringBuilder();
         int i = VALUES.length - 1;

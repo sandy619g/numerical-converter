@@ -1,5 +1,6 @@
 package com.app.converter.utils;
 
+import com.app.converter.exception.NumeralException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +15,7 @@ public class ConverterUtilTest {
 
     @Test
     void testGetDecimalToRomanConversionWithInvalidInput() {
-        assertThrows(IllegalArgumentException.class, () -> ConverterUtil.getDecimalToRomanConversion(-5));
+        assertThrows(NumeralException.class, () -> ConverterUtil.getDecimalToRomanConversion(-5));
     }
 
 }

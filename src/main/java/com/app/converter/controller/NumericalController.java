@@ -1,6 +1,5 @@
 package com.app.converter.controller;
 
-import com.app.converter.exception.CustomException;
 import com.app.converter.exception.NumeralException;
 import com.app.converter.service.NumeralConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
