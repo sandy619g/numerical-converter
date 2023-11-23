@@ -19,7 +19,7 @@ Once the application is running, you can use the provided API endpoints to perfo
 - **URL:** `/api/v1/numerical-converter/{type}/{numeral}`
 - **Method:** `GET`
 - **Parameters:**
-    - `{type}`: Conversion type (e.g., `decimal-to-roman`, `binary-to-roman`).
+    - `{type}`: Conversion type (e.g., `DECIMAL_TO_ROMAN`, `BINARY_TO_ROMAN`).
     - `{numeral}`: Numeral to be converted.
 - **Response:** Returns the converted numeral.
 
