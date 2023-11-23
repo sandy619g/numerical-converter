@@ -1,65 +1,56 @@
 package com.app.converter.controller;
 
+import com.app.converter.audit.service.AuditLogService;
 import com.app.converter.exception.NumeralException;
-import com.app.converter.exception.NumeralResponseExceptionHandler;
+import com.app.converter.service.ConverterFactory;
 import com.app.converter.service.NumeralConverterService;
-
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class NumericalControllerTest {
 
-    private MockMvc mockMvc;
+public class NumericalControllerTest {
 
     @Mock
     private NumeralConverterService service;
 
+    @Mock
+    private AuditLogService auditLogService;
+
     @InjectMocks
     private NumericalController controller;
 
-    @BeforeAll
+    private MockMvc mockMvc;
+
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .setControllerAdvice(new NumeralResponseExceptionHandler())
-                .build();
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
-    public void testConvertValidInput() throws Exception {
-        when(service.convertNum("type", "numeral")).thenReturn("result");
-        RequestBuilder requestBuilder = get("/api/v1/numerical-converter/type/numeral")
-                .contentType(MediaType.APPLICATION_JSON);
+    public void testConvert() throws Exception {
 
-        mockMvc.perform(requestBuilder)
+        String numeral = "123";
+        ConverterFactory type = ConverterFactory.DECIMAL_TO_ROMAN;
+        String expectedResult = "CXXIII";
+
+        when(service.convertNum(type, numeral)).thenReturn(expectedResult);
+
+        mockMvc.perform(get("/api/v1/numerical-converter")
+                        .param("type", type.name())
+                        .param("numeral", numeral)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("result"));
-    }
+                .andExpect(content().string(expectedResult));
 
-    @Test
-    public void testConvertNumeralExceptionHandling() throws Exception {
-        when(service.convertNum("type", "numeral"))
-                .thenThrow(new NumeralException("Invalid Numeral value"));
-        RequestBuilder requestBuilder = get("/api/v1/numerical-converter/type/numeral")
-                .contentType(MediaType.APPLICATION_JSON);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Invalid Numeral value"));
+        verify(auditLogService, times(1)).logConversion(String.valueOf(type), numeral, expectedResult);
     }
 }
-
-

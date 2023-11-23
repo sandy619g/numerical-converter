@@ -1,19 +1,19 @@
 package com.app.converter.service;
 
 import com.app.converter.exception.NumeralException;
-import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class NumeralConverterService {
 
-    public String convertNum(String conversionType, String numeral) throws Exception {
-        if (EnumUtils.isValidEnum(ConverterFactory.class, conversionType)) {
-            Converter converter = ConverterFactory.valueOf(conversionType.toUpperCase())
-                    .createConverter();
-            return converter.convert(numeral);
+    public String convertNum(ConverterFactory conversionType, String numeral) throws Exception {
+        if (ObjectUtils.isEmpty(conversionType) || StringUtils.isEmpty(numeral)) {
+            throw new NumeralException("Conversion Type or Numeral is invalid");
         } else {
-            throw new NumeralException("Invalid Conversion Type");
+            Converter converter = conversionType.createConverter();
+            return converter.convert(numeral);
         }
     }
 }

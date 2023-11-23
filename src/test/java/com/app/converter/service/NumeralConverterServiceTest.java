@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static com.app.converter.service.ConverterFactory.BINARY_TO_ROMAN;
@@ -26,16 +25,16 @@ public class NumeralConverterServiceTest {
 
     @Test
     public void testConvertNumWithValidConversionType() throws Exception {
-        String result = service.convertNum(DECIMAL_TO_ROMAN.name(), "10");
+        String result = service.convertNum(DECIMAL_TO_ROMAN, "10");
         assertEquals("X", result);
-        String binaryResult = service.convertNum(BINARY_TO_ROMAN.name(), "1111");
+        String binaryResult = service.convertNum(BINARY_TO_ROMAN, "1111");
         assertEquals("XV", binaryResult);
     }
 
     @Test
     public void testConvertNumWithInvalidConversionType() throws Exception {
         assertThrows(NumeralException.class, () ->
-                service.convertNum("INVALID_TYPE", "123"));
+                service.convertNum(null, "123"));
     }
 }
 

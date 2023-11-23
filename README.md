@@ -18,7 +18,7 @@ Once the application is running, you can use the provided API endpoints to perfo
 
 - **URL:** `/api/v1/numerical-converter/{type}/{numeral}`
 - **Method:** `GET`
-- **Path Variables:**
+- **Parameters:**
     - `{type}`: Conversion type (e.g., `decimal-to-roman`, `binary-to-roman`).
     - `{numeral}`: Numeral to be converted.
 - **Response:** Returns the converted numeral.
@@ -33,3 +33,8 @@ Once the application is running, you can use the provided API endpoints to perfo
 
 The application includes an audit log feature to track numeral conversions. Audit logs can be retrieved through the `/api/v1/numerical-converter/audit-logs` endpoint. The audit log includes the timestamp, conversion type, input numeral, and the result of the conversion.
 
+## Enhancements
+
+To add new conversion follow the below steps
+1. Create a Converter (eg. RomanToStringConverter)
+2. Add Converter entry to ConverterFactory
